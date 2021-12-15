@@ -18,147 +18,69 @@ namespace lesson01
         public MyList()
         {
             Count = 0;
-            _capacity = 1;
+            _capacity = 0;
             _array = new T[] { };
         }
 
 
         public void Add(T item)
         {
-            if (Count + 1 > _array.Length)
-            {
-                _capacity *= 2;
-                T[] tempArray = new T[_capacity];
-
-                for (int i = 0; i < _array.Length + 1; i++)
-                {
-                    if (i == _array.Length)
-                    {
-                        tempArray[i] = item;
-                        break;
-                    }
-
-                    tempArray[i] = _array[i];
-                }
-
-                _array = tempArray;
-                Count++;
-
-            }
-            else
-            {
-                for (int i = 0; i < _array.Length; i++)
-                {
-                    if (Count - i == 0)
-                    {
-                        _array[i] = item;
-                    }
-                }
-                Count++;
-            }
+            T[] array = new T[] { item };
+            AddRange(array);
         }
 
         public void AddRange(T[] itemArray)
         {
-            if (Count + itemArray.Length > _capacity)
+            if (_capacity == 0)
             {
-                while (Count + itemArray.Length > _capacity)
-                {
-                    _capacity *= 2;
-                }
-
-                T[] tempArray = new T[_capacity];
-
-                for (int i = 0; i < _array.Length + 1; i++)
-                {
-                    if (i == Count)
-                    {
-                        int k = i;
-                        for (int j = 0; j < itemArray.Length; j++)
-                        {
-                            tempArray[k] = itemArray[j];
-                            k++;
-                        }
-                        break;
-                    }
-
-                    tempArray[i] = _array[i];
-                }
-
-                _array = tempArray;
-                Count += itemArray.Length;
+                _capacity = 1;
             }
-            else
+
+            while (Count + itemArray.Length > _capacity)
             {
-                for (int i = 0; i < _array.Length; i++)
-                {
-                    if (_array[i] == null)
-                    {
-                        int k = i;
-                        for (int j = 0; j < _capacity; j++)
-                        {
-                            _array[k] = itemArray[j];
-                        }
-                    }
-                }
-
-                Count += itemArray.Length;
+                _capacity *= 2;
             }
+
+            var tmpArray = new T[_capacity];
+            _array.CopyTo(tmpArray, 0);
+            itemArray.CopyTo(tmpArray, Count);
+
+            _array = tmpArray;
+            Count += itemArray.Length;
+
         }
 
         public bool Remove(T item)
         {
-            if (Count == 0)
+            if (IndexOf(item) == -1)
             {
                 return false;
             }
             else
             {
-                T[] tempArray = new T[_capacity];
-                for (int i = 0; i < _array.Length; i++)
-                {
-                    if (_array[i].Equals(item))
-                    {
-                        continue;
-                    }
-
-                    tempArray[i] = _array[i];
-                }
-
-                _array = tempArray;
-                Count--;
-
+                RemoveAt(IndexOf(item));
                 return true;
             }
         }
 
         public bool RemoveAt(int index)
         {
-            if (Count == 0)
+            if (index < 0 || index >= Count)
             {
                 return false;
             }
             else
             {
-                T[] tempArray = new T[_capacity];
-
-                int j = 0;
-                for (int i = 0; i < Count; i++)
-                {
-                    if (i == index)
-                    {
-                        continue;
-                    }
-
-                    tempArray[j] = _array[i];
-                    j++;
-                }
-
-                _array = tempArray;
+                Array.Copy(_array, index + 1, _array, index, _array.Length - index - 1);
                 Count--;
 
                 return true;
             }
+        }
+
+        public int IndexOf(T item)
+        {
+            return Array.IndexOf(_array, item);
         }
 
         public void Sort()
@@ -191,7 +113,7 @@ namespace lesson01
                     {
                         return _items[_position];
                     }
-                    catch(IndexOutOfRangeException)
+                    catch (IndexOutOfRangeException)
                     {
                         throw new InvalidOperationException();
                     }
