@@ -85,7 +85,15 @@ namespace lesson01
 
         public void Sort()
         {
-            Array.Sort(_array);
+            T[] tmpArray = new T[Count];
+
+            for(int i = 0; i < Count; i++)
+            {
+                tmpArray[i] = _array[i]; 
+            }
+            Array.Sort(tmpArray);
+
+            tmpArray.CopyTo(_array, 0);
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()

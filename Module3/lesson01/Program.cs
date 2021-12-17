@@ -20,6 +20,7 @@ namespace lesson01
 
             list.Remove(6);
             list.RemoveAt(2);
+            list.Sort();
 
             foreach(var i in list)
             {
