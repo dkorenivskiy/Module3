@@ -26,9 +26,9 @@ namespace lesson02
 
             foreach (char letter in _alphabet)
             {
-                if (firstLetter == Char.ToUpper(letter))
+                if (letter == Char.ToUpper(firstLetter))
                 {
-                    if (!_groupedContacts.ContainsKey(firstLetter.ToString()))
+                    if (!_groupedContacts.ContainsKey(letter.ToString()))
                     {
                         _groupedContacts.Add(letter.ToString(), new ContactGroup(contact));
                         return;

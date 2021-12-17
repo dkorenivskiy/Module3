@@ -5,7 +5,7 @@ using System.Text;
 
 namespace lesson02
 {
-    public class Contact : IComparable<string>
+    public class Contact : IComparable<Contact>
     {
         public string Name { get; set; }
 
@@ -19,14 +19,14 @@ namespace lesson02
 
         public void PrintContact()
         {
-            Console.WriteLine($"\t{Name} {0,15}{TelephoneNumber}");
+            Console.WriteLine($"\t{Name} {"",15}{TelephoneNumber}");
         }
 
-        public int CompareTo(string other)
+        public int CompareTo(Contact other)
         {
             if (other != null)
             {
-                return Name.CompareTo(other);
+                return string.Compare(this.Name, other.Name);
             }
 
             throw new InvalidOperationException();
