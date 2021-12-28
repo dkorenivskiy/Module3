@@ -6,34 +6,35 @@ using System.Threading.Tasks;
 
 namespace lesson03
 {
+    public delegate bool ResultDelegate(int number);
+
     class Class2
     {
-        public delegate bool ResultDelegate(int result);
 
         public ResultDelegate resultDelegate;
-
-        public Class2()
-        {
-            resultDelegate = Result;
-        }
 
         private int _result;
 
         private Class1 _class1 = new Class1();
 
-        private ResultDelegate Calc(int a, int b, PowDelegate powDelegate)
+        public ResultDelegate Calc(int a, int b, PowDelegate powDelegate)
         {
-            powDelegate = _class1.powDelegate;
             _result = powDelegate(a, b);
 
-
+            resultDelegate = Result;
+            return resultDelegate;
         }
 
-        private bool Result(int result)
+        private bool Result(int number)
         {
-
-
-            return false;
+            if(_result % number == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
